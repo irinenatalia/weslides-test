@@ -13,4 +13,4 @@ You may also see any lint errors in the console.
 
 
 ### Plan to complete integration in the future
-This react code can be connected with Wordpress via REST API so that admin users could easily update dynamic content or field from Wordpress CMS.
+This react code is connected with backend trough a separate Node.js app. Database choice is MySQL for the ease of usage.
