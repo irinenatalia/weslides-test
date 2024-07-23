@@ -487,6 +487,10 @@ footer img{
   text-align: right;
   cursor: pointer;
 }
+.contact-page .form-group .success{
+  margin-bottom: 20px;
+  text-align: right;
+}
 .success{
   color: green;
 }
