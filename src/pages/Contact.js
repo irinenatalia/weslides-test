@@ -1,11 +1,56 @@
 import React, { useState } from 'react';
 import { PopupModal } from "react-calendly";
+import ApiService from "../services/Service";
 import mastheadbg from "../assets/mast-contact.jpg";
 import arrow from "../assets/red-arrow.svg";
 
 
 const Contact = () => {
   const [openCalendly, setOpenCalendly] = useState(false);
+  const initialFormState = {
+    id: null,
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+  };
+  const [contactForm, setContactForm] = useState(initialFormState);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    setContactForm({ ...contactForm, [name]: value });
+  };
+
+  const saveForm = () => {
+    var data = {
+      name: contactForm.name,
+      email: contactForm.email,
+      subject: contactForm.subject,
+      message: contactForm.message
+    };
+
+    ApiService.create(data)
+      .then(response => {
+        setContactForm({
+          id: response.data.id,
+          name: response.data.name,
+          email: response.data.email,
+          subject: response.data.subject,
+          message: response.data.message
+        });
+        setSubmitted(true);
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const newForm = () => {
+    setContactForm(initialFormState);
+    setSubmitted(false);
+  };
 
     return (
       <div className="contact-page">
@@ -39,25 +84,63 @@ const Contact = () => {
 
             <div className="col-right">
               <div className="subtitle">Contact form</div>
-              <form>
+              <div className='form-group'>
                 <div className="input-group">
-                  <label>Name</label>
-                  <input type="text" name="fullname" placeholder="Enter your name"/>
+                  <label for="fullname">Name</label>
+                  <input
+                    type="text"
+                    id="fullname"
+                    required
+                    value={submitted? "" : contactForm.name}
+                    onChange={handleInputChange}
+                    name="name"
+                    placeholder="Enter your name"
+                  />
                 </div>
                 <div className="input-group">
-                  <label>Email</label>
-                  <input type="text" name="email" placeholder="Enter your email address"/>
+                  <label for="email">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    required
+                    value={submitted? "" : contactForm.email}
+                    onChange={handleInputChange}
+                    name="email"
+                    placeholder="Enter your email address"
+                  />
                 </div>
                 <div className="input-group">
-                  <label>Subject</label>
-                  <input type="text" name="subject" placeholder="“I need a Pro design!”"/>
+                  <label for="subject">Subject</label>
+                  <input
+                    type="text"
+                    id="subject"
+                    required
+                    value={submitted? "" : contactForm.subject}
+                    onChange={handleInputChange}
+                    name="subject"
+                    placeholder="“I need a Pro design!”"
+                  />
                 </div>
                 <div className="input-group">
-                  <label>Message</label>
-                  <textarea name="message" rows='8' placeholder="We're happy to help! Describe your inquiry and we will reach out soon."/>
+                  <label for="message">Message</label>
+                  <textarea 
+                    id="message"
+                    name="message" 
+                    rows='8' 
+                    required
+                    value={submitted? "" : contactForm.message}
+                    onChange={handleInputChange}
+                    placeholder="We're happy to help! Describe your inquiry and we will reach out soon."/>
                 </div>
-                <button className="submit book-call">Send Message <img src={arrow} alt="Arrow" /></button>
-              </form>
+                {submitted ? (
+                  <div className='success'>
+                    <strong>Thank you, we'll get back to you soon!</strong>
+                  </div>
+                ) : ""}
+                <button className="submit book-call" onClick={saveForm}>
+                  Send Message <img src={arrow} alt="Arrow" />
+                </button>
+              </div>
             </div>
           </div>
         </section>

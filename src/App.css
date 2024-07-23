@@ -464,10 +464,10 @@ footer img{
 .contact-page .section-body .col-right{
   width: 100%;
 }
-.contact-page form{
+.contact-page .form-group{
   margin-top: 40px;
 }
-.contact-page form *{
+.contact-page .form-group *{
   font-family: "Inter", sans-serif;
 }
 .input-group{
@@ -482,7 +482,11 @@ footer img{
   border: none;
   background: #F4F4F4;
 }
-.contact-page form .submit{
+.contact-page .form-group .submit{
   width: 100%;
   text-align: right;
+  cursor: pointer;
+}
+.success{
+  color: green;
 }
